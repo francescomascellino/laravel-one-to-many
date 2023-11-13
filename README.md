@@ -86,36 +86,54 @@ php artisan preset:ui bootstrap --auth
 
 ## TABLE RELATIONS
 
+CREATE THE NEW MODEL AND ITS MIGRATION
+
 ```bash
-php artisan make:model Category
+php artisan make:model Type
 
 ```
 ```bash
-php artisan make:migration create_categories_table
+php artisan make:migration create_types_table
 ```
 
-migration:
+EDIT THE UP METHOD ON THE MIGRATION
 ```php
-$table->string('name', 50);
-$table->string('slug')->unique();
+public function up(): void
+    {
+        Schema::create('types', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 50);
+            $table->string('slug')->unique();
+            $table->timestamps();
+        });
+    }
 ```
-php artisan make:seeder CategorySeeder
+
+CREATE A SEEDER FOR THE NEW MODEL
+
+```bash
+php artisan make:seeder TypeSeeder
+```
+EDIT THE SEEDER
+
 ```php
-$categories = [
-    'Programming', 'Fullstack', 'Frontend', 'Backend', 'API');
+$types = [
+    'Fullstack', 'Frontend', 'Backend', 'API');
 ]
 
-foreach ($categories as $category) {
-    $new_category = new Category;
-    $new_category->name = $category;
-    $new_category->slug = Str::slug($new_category->name, '-');
-    $new_category->save();
+foreach ($types as $type) {
+    $new_type = new Type;
+    $new_type->name = $type;
+    $new_type->slug = Str::slug($new_type->name, '-');
+    $new_type->save();
 }
 ```
 
 ```bash
 php artisan db:seed --class=CategorySeeder
 ```
+
+CREARE UNA MIGRATION PER AGGIUNGERE LA COLONNA CON LA FOREIGN KEY ALLA TABELLA E AL MODELLO PROJECTS
 
 ```bash
 php artisan make:migration add_category_id_foreign_key_to_posts_table
