@@ -222,6 +222,20 @@ $project->type_id = $faker->randomElement($types);
 
 AGGIUNGERE LA SCELTA DEI TYPES ALLA CREAZIONE DI UN NUOVO PROGETTO:
 
+AGGIUNGERE AL MODELLO ***Project*** IL CAMPO AI FILLABLE
+```php
+protected $fillable = ['type_id', 'title', 'slug', 'thumb', 'description', 'tech', 'github', 'link'];
+```
+
+AGGIUNGERE IN ***StoreProjectRequest*** IL CAMPO ***type_id***
+
+exists:table,column
+The field under validation must exist in a given database table.
+
+```php
+'type_id' => ['nullable', 'exists:types,id'],
+```
+
 ProjectController ***create()*** METHOD
 ```php
 public function create()
@@ -234,7 +248,6 @@ public function create()
 
 ***admin.projects.create*** VIEW:
 ```php
-
 <label for="type_id" class="form-label">Type</label>
     <select class="form-select form-select 
     @error('type_id') is-invalid @enderror"
@@ -252,46 +265,40 @@ public function create()
     </select>
 ```
 
+AGGIUNGERE Types AL FORM DI EDIT:
+
+AGGIUNGERE IN ***UpdateProjectREquest*** IL CAMPO ***type_id***
+```php
+'type_id' => ['nullable', 'exists:types,id'],
+```
+
 ProjectController ***edit()*** METHOD:
 ```php
-$types = Type::all()
-return view ('admin.projects.edit', compact('types')
+public function edit(Project $project)
+    {
+        $page_title = 'Edit';
+
+        $types = Type::all();
+        return view('admin.projects.edit', compact('project', 'page_title', 'types'));
+    }
 ```
 
 ***admin.projects.edit*** VIEW:
 ```php
-form select
-<option selected disabled>Select one</option>
-<option  value="">None</option>
 
-@forelse ($types as $type)
-<option value "{{$type->id}}" {{$type->id == old($type->id, $type_id) ? selected : ''}} 
-class="form-select 
-@error('type_id') is-invalid 
-@enderror">{{$type->name}}</option>
+<select class="form-select form-select @error('type_id') is-invalid @enderror" name="type_id" id="type_id">
+    <option selected>Select a Type</option>
+    <option value="">Uncategorized</option>
 
-@empty
+        @foreach ($types as $type)
+            <option value="{{ $type->id }}" 
+            {{-- SE VI E' UN ERRORE E LA PAGINA VIENE RICARICATA IL CAMPO PRECEDENTEMENTE SELEZIONATO RESTA selected --}}
+            {{ $type->id == old('type_id', $project->type_id) ? 'selected' : '' }}>
+                {{ $type->name }}
+            </option>
 
-@endforeslse
-```
-
-AGGIUNGERE AL MODELLO ***Project*** IL CAMPO
-```php
-protected $fillable = ['type_id', 'title', 'slug', 'thumb', 'description', 'tech', 'github', 'link'];
-```
-
-AGGIUNGERE IN ***StoreProjectRequest*** IL CAMPO
-
-exists:table,column
-The field under validation must exist in a given database table.
-
-```php
-'type_id' => ['nullable', 'exists:types,id'],
-```
-
-AGGIUNGERE IN ***UpdateProjectREquest*** IL CAMPO
-```php
-'type_id' => ['nullable', 'exists:types,id'],
+        @endforeach
+</select>
 ```
 
 ADDING TYPE TO PROJECT ***show()***  VIEW
@@ -382,3 +389,9 @@ pubic function user(){
     return $this_>belongsTo(User::class)
 }
 ```
+
+php artisan migrate:refresh
+
+artisan db:seed --class=TypeSeeder
+
+php artisan db:seed --class=ProjectSeeder

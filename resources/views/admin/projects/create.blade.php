@@ -21,7 +21,8 @@
                         <label for="title" class="form-label"><strong>* Title</strong></label>
 
                         <input type="text" class="form-control @error('title') is-invalid"  @enderror name="title"
-                            id="title" aria-describedby="helpTitle" placeholder="New Project Title">
+                            id="title" aria-describedby="helpTitle" placeholder="New Project Title"
+                            value="{{ old('title') }}">
                         <div id="helpTitle" class="form-text">
                             Your title must be 3-200 characters long.
                         </div>
@@ -34,19 +35,18 @@
 
                     <div class="mb-3">
 
-                        <label for="description"
-                            class="form-label @error('description')" is-invalid  @enderror><strong>Description</strong></label>
+                        <label for="description" class="form-label "><strong>Description</strong></label>
 
-                        <textarea class="form-control"
-                            name="description" id="description" aria-describedby="helpDescription" cols="30"
-                            rows="5" placeholder="New Project Description"></textarea>
-                            <div id="helpDescription" class="form-text">
-                                Your description must be 3-500 characters long.
-                            </div>
+                        <textarea class="form-control @error('description') is-invalid  @enderror" name="description" id="description"
+                            aria-describedby="helpDescription" cols="30" rows="5" placeholder="New Project Description"></textarea>
 
-                            @error('description')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
+                        <div id="helpDescription" class="form-text">
+                            Your description must be 3-500 characters long.
+                        </div>
+
+                        @error('description')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
 
                     </div>
 
@@ -57,12 +57,16 @@
                             <option selected>Select a Type</option>
                             <option value="">Uncategorized</option>
                             @foreach ($types as $type)
-                                <option value="{{ $type->id }}" --}} {{-- SE VI E' UN ERRORE E LA PAGINA VIENE RICARICATA IL CAMPO PRECEDENTEMENTE SELEZIONATO RESTA selected --}}
+                                <option value="{{ $type->id }}" {{-- SE VI E' UN ERRORE E LA PAGINA VIENE RICARICATA IL CAMPO PRECEDENTEMENTE SELEZIONATO RESTA selected --}}
                                     {{ $type->id == old('type_id') ? 'selected' : '' }}>
                                     {{ $type->name }}
                                 </option>
                             @endforeach
                         </select>
+
+                        @error('type_id')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="mb-3">
@@ -70,7 +74,8 @@
                         <label for="tech" class="form-label"><strong>Technologies Used</strong></label>
 
                         <input type="text" class="form-control @error('tech') is-invalid @enderror" name="tech"
-                            id="tech" aria-describedby="helpTech" placeholder="Tech used creating the New Project">
+                            id="tech" aria-describedby="helpTech" placeholder="Tech used creating the New Project"
+                            value="{{ old('tech') }}">
                         <div id="helpTech" class="form-text">
                             Your tech list must be 3-500 characters long.
                         </div>
@@ -86,7 +91,8 @@
                         <label for="github" class="form-label"><strong>GitHub Link</strong></label>
 
                         <input type="text" class="form-control @error('github') is-invalid @enderror" name="github"
-                            id="github" placeholder="Enter your GitHub Project Repository Link">
+                            id="github" placeholder="Enter your GitHub Project Repository Link"
+                            value="{{ old('github') }}">
 
                         @error('github')
                             <div class="text-danger">{{ $message }}</div>
@@ -99,7 +105,7 @@
                         <label for="link" class="form-label"><strong>Project Link</strong></label>
 
                         <input type="text" class="form-control @error('link') is-invalid @enderror" name="link"
-                            id="link" placeholder="Enter your Project Link">
+                            id="link" placeholder="Enter your Project Link" value="{{ old('link') }}">
 
                         @error('link')
                             <div class="text-danger">{{ $message }}</div>
