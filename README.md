@@ -56,11 +56,6 @@ INSTALLARE I PACCHETTI
 npm i
 ```
 
-ESEGUIRE LA MIGRAZIONE
-```bash
-php artisan migrate
-```
-
 SE NECESSARIO CREARE LA CARTELLA DI SALVATAGGIO DEI FILES IN storage/app/public/[image disk folder]
 
 ## TABLE RELATIONS
