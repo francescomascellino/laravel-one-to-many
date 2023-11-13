@@ -286,12 +286,12 @@ exists:table,column
 The field under validation must exist in a given database table.
 
 ```php
-'type_id' => ['nullable', 'exists:types.id'],
+'type_id' => ['nullable', 'exists:types,id'],
 ```
 
 AGGIUNGERE IN ***UpdateProjectREquest*** IL CAMPO
 ```php
-'type_id' => ['nullable', 'exists:types.id'],
+'type_id' => ['nullable', 'exists:types,id'],
 ```
 
 ADDING TYPE TO PROJECT ***show()***  VIEW

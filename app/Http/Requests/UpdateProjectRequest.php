@@ -14,7 +14,7 @@ class UpdateProjectRequest extends FormRequest
     public function authorize(): bool
     {
         // return true;
-        return Auth::id() === 1; // SOLOUSER ID 1 PPUO' AGGIORNARE
+        return Auth::id() === 1; // SOLO USER ID 1 PPUO' AGGIORNARE
     }
 
     /**
@@ -25,7 +25,7 @@ class UpdateProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type_id' => ['nullable', 'exists:types.id'],
+            'type_id' => 'nullable|exists:types,id',
             'title' => ['required', 'bail', 'min:3', 'max:200', Rule::unique('projects')->ignore($this->project)],
             'thumb' => 'nullable|image|max:300',
             'description' => 'nullable|bail|min:3|max:500',
