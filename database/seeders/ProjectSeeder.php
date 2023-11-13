@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Project;
+use App\Models\Type;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Generator as Faker;
@@ -15,9 +16,12 @@ class ProjectSeeder extends Seeder
      */
     public function run(Faker $faker): void
     {
+        $types = Type::pluck('id'); // The pluck method retrieves all of the values for a given key:
+        
         for ($i = 0; $i < 10; $i++) {
             $project = new Project();
 
+            $project->type_id = $faker->randomElement($types);
             $project->title = $faker->realText(50);
             $project->slug = Str::slug($project->title, '-');
             // $project->thumb = 'thumbs/' . $faker->image('public/storage/thumbs', category: 'Projects', fullPath: 'false');

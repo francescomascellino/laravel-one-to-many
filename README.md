@@ -138,7 +138,7 @@ ESEGUIRE IL SEEDING
 ```bash
 php artisan db:seed --class=TypeSeeder
 ```
-
+php artisan db:seed --class=ProjectSeeder
 CREARE UNA MIGRATION PER AGGIUNGERE LA COLONNA CON LA FOREIGN KEY ALLA TABELLA E AL MODELLO PROJECTS
 
 ```bash
@@ -208,6 +208,18 @@ ESEGUIRE LA MIGRAZIONE
 ```bash
 php artisan migrate
 ```
+
+PER ESEGUIRE IL SEEDING E ASSEGNARE UN VALORE RANDOM TRA GLI ID DI ***types*** USARE IL METODO ***pluck()***
+
+IN ProjectSeeder.php
+```php
+$types = Type::pluck('id');
+```
+E CON FAKER PRENDERE UN VALORE CASUALE 
+```php
+$project->type_id = $faker->randomElement($types);
+```
+
 
 ProjectController create()
 ```php
