@@ -389,8 +389,10 @@ pubic function user(){
 ```
 
 USEFUL COMMANDS TO REMEMBER:
+```bash
 php artisan migrate:refresh
 
 artisan db:seed --class=TypeSeeder
 
 php artisan db:seed --class=ProjectSeeder
+```
