@@ -112,7 +112,7 @@ ESEGUIRE IL SEEDING
 ```bash
 php artisan db:seed --class=TypeSeeder
 ```
-php artisan db:seed --class=ProjectSeeder
+
 CREARE UNA MIGRATION PER AGGIUNGERE LA COLONNA CON LA FOREIGN KEY ALLA TABELLA E AL MODELLO PROJECTS
 
 ```bash
