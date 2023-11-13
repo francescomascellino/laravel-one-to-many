@@ -127,7 +127,7 @@
                             </td>
                         </tr>
                     @empty
-                        <td class="align-middle text-center" colspan="6">No Projects to show</td>
+                        <td class="align-middle text-center" colspan="7">No Projects to show</td>
                     @endforelse
 
                 </tbody>

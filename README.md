@@ -109,6 +109,12 @@ public function up(): void
     }
 ```
 
+MIGRARE LA TABELLA NEL DATABASE
+
+```bash
+php artisan migrate
+```
+
 CREATE A SEEDER FOR THE NEW MODEL
 
 ```bash
@@ -117,9 +123,7 @@ php artisan make:seeder TypeSeeder
 EDIT THE SEEDER
 
 ```php
-$types = [
-    'Fullstack', 'Frontend', 'Backend', 'API');
-]
+$types = ['Fullstack', 'Frontend', 'Backend', 'API'];
 
 foreach ($types as $type) {
     $new_type = new Type;
@@ -129,6 +133,8 @@ foreach ($types as $type) {
 }
 ```
 
+ESEGUIRE IL SEEDING
+
 ```bash
 php artisan db:seed --class=TypeSeeder
 ```
@@ -136,39 +142,71 @@ php artisan db:seed --class=TypeSeeder
 CREARE UNA MIGRATION PER AGGIUNGERE LA COLONNA CON LA FOREIGN KEY ALLA TABELLA E AL MODELLO PROJECTS
 
 ```bash
-php artisan make:migration add_Type_id_foreign_key_to_projects_table
+php artisan make:migration add_type_id_foreign_key_to_projects_table
 ```
 
-migrationin posts
-UP
+EDITARE I METODI UP E DOWN DELLA MIGRAZIONE APPENA CREATA
 
 ```php
-$table->unsignedBiginteger('type_id')->nullable->after('id');
-$table->foreign('type_id') // PROJECTS ha una FK legata al TYPE
-->reference('id') // CAMPO
-->on('types'); // NOME TABELLA
+public function up(): void
+    {
+        Schema::table('projects', function (Blueprint $table) {
+            // AGGIUNGE L'ID DI TYPE DOPO LA COLONNA ID
+            $table->unsignedBiginteger('type_id')->nullable()->after('id');
+
+            $table->foreign('type_id') // ASSEGNA LA FK type_id legata al TYPE
+                ->references('id') // LEGATA AL CAMPO id
+                ->on('types'); // DELLA TABELLA types
+        });
+    }
 ```
 
-DOWN
 ```php
-$table->dropForeign('projects_type_id_foreign'); // PROJECT ha una FK legata al TYPE
-$table->dropColumn('type_id');
+public function down(): void
+    {
+        Schema::table('projects', function (Blueprint $table) {
+            $table->dropForeign('projects_type_id_foreign'); // ELIMINA LA FK type_id DALLA TABELLA projects
+            $table->dropColumn('type_id'); // ELIMINA LA COLONNA type_id
+        });
+    }
 ```
+
+ASSEGNARE LE RELAZIONI AI MODELLI
 
 1 TYPE -> MANY PROJECTS
 MODEL Type
+
 ```php
-public function projects(): {
-    return $this->hasMany(Project::class); // THIS TYPE HAS MANY PROJECTS
-}
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Project;
+```
+
+```php
+
+public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class); // THIS TYPE HAS MANY PROJECTS
+    }
 ```
 
 OGNI PROJECT -> 1 TYPE
-MODEL Projects 
+MODEL Project
+
 ```php
-public function category(): {
-    return $this->belongsTo(Type::class); // THIS PROJECT BELONGS TO A TYPE
-}
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Type;
+```
+
+```php
+public function type(): BelongsTo
+    {
+        return $this->belongsTo(Type::class); // THIS PROJECT BELONGS TO A TYPE
+    }
+```
+
+ESEGUIRE LA MIGRAZIONE
+```bash
+php artisan migrate
 ```
 
 ProjectController create()
@@ -222,12 +260,12 @@ Add to model Post
 $fillable = [... 'type_id'];
 ```
 
-StorePostRequest
+StoreProjectRequest
 ```php
 'type_id' => ['nullable', 'exists:types.id'],
 ```
 
-UpdatePostREquest
+UpdateProjectREquest
 ```php
 'type_id' => ['nullable', 'exists:types.id'],
 ```
