@@ -220,28 +220,36 @@ E CON FAKER PRENDERE UN VALORE CASUALE
 $project->type_id = $faker->randomElement($types);
 ```
 
+AGGIUNGERE LA SCELTA DEI TYPES ALLA CREAZIONE DI UN NUOVO PROGETTO:
 
-ProjectController create()
+ProjectController ***create()*** METHOD
 ```php
-$types = Type::all()
-return view ('admin.projects.create', compact('types')
+public function create()
+    {
+        $page_title = 'Add New';
+        $types = Type::all();
+        return view('admin.projects.create', compact('page_title', 'types'));
+    }
 ```
 
-create.blade.php
+***admin.projects.create*** VIEW:
 ```php
-form select
-<option selected disabled>Select one</option>
-<option  value="">None</option>
 
-@forelse ($types as $type)
-<option value "{{$type->id}}" {{$type->id == old($type->id) ? selected : ''}} 
-class="form-select 
-@error('type_id') is-invalid 
-@enderror">{{$type->name}}</option>
+<label for="type_id" class="form-label">Type</label>
+    <select class="form-select form-select 
+    @error('type_id') is-invalid @enderror"
+    name="type_id" id="type_id">
+        <option selected>Select a Type</option>
+        <option value="">Uncategorized</option>
+            @foreach ($types as $type)
+                <option value="{{$type->id}}"
 
-@empty
-
-@endforeslse
+                /* SE VI E' UN ERRORE E LA PAGINA VIENE RICARICATA IL CAMPO PRECEDENTEMENTE SELEZIONATO RESTA selected */
+                {{ $type->id == old('type_id') ? 'selected' : '' }}>
+                    {{$type->name}}
+                </option>
+            @endforeach
+    </select>
 ```
 
 PostsController edit()
@@ -282,10 +290,16 @@ UpdateProjectREquest
 'type_id' => ['nullable', 'exists:types.id'],
 ```
 
-show.blade
+ADDING TYPE TO PROJECT ***show()***  VIEW
+
+***admin.projects.show*** VIEW:
 ```php
-{{$project-type?->name}}
-{{$project-type->name ? $project-type->name : 'Uncategorized'}}
+<p><strong>Type: </strong>{{$project-type?->name}}</p>
+```
+
+OPPURE:
+```php
+<p><strong>Type: </strong>{{$project->type->name ? $project->type->name : 'Uncategorized'}}</p>
 ```
 
 ## ASSOCIARE POST A USER

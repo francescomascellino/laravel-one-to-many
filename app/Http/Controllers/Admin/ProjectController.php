@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\Type;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -34,7 +35,8 @@ class ProjectController extends Controller
     public function create()
     {
         $page_title = 'Add New';
-        return view('admin.projects.create', compact('page_title'));
+        $types = Type::all();
+        return view('admin.projects.create', compact('page_title', 'types'));
     }
 
     /**
