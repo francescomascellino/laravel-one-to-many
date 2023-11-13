@@ -130,52 +130,51 @@ foreach ($types as $type) {
 ```
 
 ```bash
-php artisan db:seed --class=CategorySeeder
+php artisan db:seed --class=TypeSeeder
 ```
 
 CREARE UNA MIGRATION PER AGGIUNGERE LA COLONNA CON LA FOREIGN KEY ALLA TABELLA E AL MODELLO PROJECTS
 
 ```bash
-php artisan make:migration add_category_id_foreign_key_to_posts_table
+php artisan make:migration add_Type_id_foreign_key_to_projects_table
 ```
 
 migrationin posts
 UP
 
 ```php
-$table->unsignedBiginteger('category_id')->nullable->after('id');
-$table->foreign('category_id') // POST ha una FK legata alla CATEGORY
+$table->unsignedBiginteger('type_id')->nullable->after('id');
+$table->foreign('type_id') // PROJECTS ha una FK legata al TYPE
 ->reference('id') // CAMPO
-->on('categories'); // NOME TABELLA
+->on('types'); // NOME TABELLA
 ```
 
 DOWN
 ```php
-$table->dropForeign('posts_category_id_foreign'); // POST ha una FK legata alla CATEGORY
-$table->dropColumn('category_id');
+$table->dropForeign('projects_type_id_foreign'); // PROJECT ha una FK legata al TYPE
+$table->dropColumn('type_id');
 ```
 
-Category -> many POSTS
-MODEL Post
+1 TYPE -> MANY PROJECTS
+MODEL Type
 ```php
-public function posts(): {
-    return $this->hasMany(Post::class); // THIS CATEGORY HAS MANY POSTS
+public function projects(): {
+    return $this->hasMany(Project::class); // THIS TYPE HAS MANY PROJECTS
 }
 ```
 
-MANY POSTS -> 1 CATEGORY
-MODEL POST 
-
+OGNI PROJECT -> 1 TYPE
+MODEL Projects 
 ```php
 public function category(): {
-    return $this->belongsTo(Category::class); // THIS POST BELONGS TO A CATEGORY
+    return $this->belongsTo(Type::class); // THIS PROJECT BELONGS TO A TYPE
 }
 ```
 
-PostsController create()
+ProjectController create()
 ```php
-$categories = Category::all()
-return view ('admin.posts.create', compact('categories')
+$types = Type::all()
+return view ('admin.projects.create', compact('types')
 ```
 
 create.blade.php
@@ -184,11 +183,11 @@ form select
 <option selected disabled>Select one</option>
 <option  value="">None</option>
 
-@forelse ($categories as $category)
-<option value "{{$category->id}}" {{$category->id == old($category->id) ? selected : ''}} 
+@forelse ($types as $type)
+<option value "{{$type->id}}" {{$type->id == old($type->id) ? selected : ''}} 
 class="form-select 
-@error('category_id') is-invalid 
-@enderror">{{$category->name}}</option>
+@error('type_id') is-invalid 
+@enderror">{{$type->name}}</option>
 
 @empty
 
@@ -197,8 +196,8 @@ class="form-select
 
 PostsController edit()
 ```php
-$categories = Category::all()
-return view ('admin.posts.edit', compact('categories')
+$types = Type::all()
+return view ('admin.projects.edit', compact('types')
 ```
 
 edit.blade.php
@@ -207,11 +206,11 @@ form select
 <option selected disabled>Select one</option>
 <option  value="">None</option>
 
-@forelse ($categories as $category)
-<option value "{{$category->id}}" {{$category->id == old($category->id, $category_id) ? selected : ''}} 
+@forelse ($types as $type)
+<option value "{{$type->id}}" {{$type->id == old($type->id, $type_id) ? selected : ''}} 
 class="form-select 
-@error('category_id') is-invalid 
-@enderror">{{$category->name}}</option>
+@error('type_id') is-invalid 
+@enderror">{{$type->name}}</option>
 
 @empty
 
@@ -220,30 +219,31 @@ class="form-select
 
 Add to model Post
 ```php
-$fillable = [... 'category_id'];
+$fillable = [... 'type_id'];
 ```
 
 StorePostRequest
 ```php
-'category_id' => ['nullable', 'exists:categories.id'],
+'type_id' => ['nullable', 'exists:types.id'],
 ```
 
 UpdatePostREquest
 ```php
-'category_id' => ['nullable', 'exists:categories.id'],
+'type_id' => ['nullable', 'exists:types.id'],
 ```
 
 show.blade
 ```php
-{{$post-category?->name}}
-{{$post-category->name ? $post-category->name : 'Uncategorized'}}
+{{$project-type?->name}}
+{{$project-type->name ? $project-type->name : 'Uncategorized'}}
 ```
 
-User -> Many Posts
+## ASSOCIARE POST A USER
+User -> Many Projects
 
-Post -> one User. Post ha una FK legata all'User
+Project -> one User. Project ha una FK legata all'User
 
-ASSOCIARE POST A USER
+
 
 PRIMA CREARE RELATION
 
