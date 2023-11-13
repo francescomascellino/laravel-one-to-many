@@ -319,8 +319,6 @@ User -> Many Projects
 
 Project -> one User. Project ha una FK legata all'User
 
-
-
 PRIMA CREARE RELATION
 
 Model post aggiungere la FK
@@ -390,6 +388,7 @@ pubic function user(){
 }
 ```
 
+USEFUL COMMANDS TO REMEMBER:
 php artisan migrate:refresh
 
 artisan db:seed --class=TypeSeeder
