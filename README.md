@@ -63,27 +63,6 @@ php artisan migrate
 
 SE NECESSARIO CREARE LA CARTELLA DI SALVATAGGIO DEI FILES IN storage/app/public/[image disk folder]
 
-
-## INSTALLARE BREEZE AUTHENTICATION STARTER KIT
-
-```bash
-composer require laravel/breeze --dev
-```
-
-```bash
-php artisan breeze:install
-```
-
-INSTALLARE BOOTSTRAP + VITE PRESET WITH AUTHENTICATION
-
-```bash
-composer require pacificdev/laravel_9_preset
-```
-
-```bash
-php artisan preset:ui bootstrap --auth
-```
-
 ## TABLE RELATIONS
 
 CREATE THE NEW MODEL AND ITS MIGRATION
