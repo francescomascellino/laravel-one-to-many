@@ -252,13 +252,13 @@ public function create()
     </select>
 ```
 
-PostsController edit()
+ProjectController ***edit()*** METHOD:
 ```php
 $types = Type::all()
 return view ('admin.projects.edit', compact('types')
 ```
 
-edit.blade.php
+***admin.projects.edit*** VIEW:
 ```php
 form select
 <option selected disabled>Select one</option>
@@ -275,17 +275,21 @@ class="form-select
 @endforeslse
 ```
 
-Add to model Post
+AGGIUNGERE AL MODELLO ***Project*** IL CAMPO
 ```php
-$fillable = [... 'type_id'];
+protected $fillable = ['type_id', 'title', 'slug', 'thumb', 'description', 'tech', 'github', 'link'];
 ```
 
-StoreProjectRequest
+AGGIUNGERE IN ***StoreProjectRequest*** IL CAMPO
+
+exists:table,column
+The field under validation must exist in a given database table.
+
 ```php
 'type_id' => ['nullable', 'exists:types.id'],
 ```
 
-UpdateProjectREquest
+AGGIUNGERE IN ***UpdateProjectREquest*** IL CAMPO
 ```php
 'type_id' => ['nullable', 'exists:types.id'],
 ```
@@ -302,6 +306,7 @@ OPPURE:
 <p><strong>Type: </strong>{{$project->type->name ? $project->type->name : 'Uncategorized'}}</p>
 ```
 
+# EXTRA
 ## ASSOCIARE POST A USER
 User -> Many Projects
 
