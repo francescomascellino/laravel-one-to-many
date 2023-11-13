@@ -4,7 +4,7 @@
     <div class="container">
 
         <h2 class="fs-4 text-secondary my-4">
-            {{ __('Project List for') }} {{ Auth::user()->name }}
+            {{ __('Project Types List for') }} {{ Auth::user()->name }}
         </h2>
 
         @include('admin.projects.partials.status_alert')
@@ -67,8 +67,8 @@
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body text-start">
-                                                <p>This operation will move the type
-                                                    "<strong>{{ $type->name }}</strong>" in the Recycle Bin.</p>
+                                                <p>This operation will <strong class="text-danger">delete</strong> type
+                                                    "<strong>{{ $type->name }}</strong>" permanently.</p>
                                                 <p>Are you sure?</p>
                                             </div>
                                             <div class="modal-footer">

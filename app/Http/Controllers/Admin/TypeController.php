@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreTypeRequest;
+use App\Http\Requests\UpdateTypeRequest;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -26,16 +28,26 @@ class TypeController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        //
+    { {
+            $page_title = 'Add New Type';
+            return view('admin.types.create', compact('page_title'));
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTypeRequest $request)
     {
-        //
+        $valData = $request->validated();
+
+        // INVOCHIAMO IL METODO STATICO DAL MODELLO
+        $valData['slug'] = Type::generateSlug($request->name);
+
+
+        $newType = Type::create($valData);
+
+        return to_route('admin.types.index')->with('status', 'Well Done, New Type Added Succeffully');
     }
 
     /**
@@ -51,15 +63,19 @@ class TypeController extends Controller
      */
     public function edit(Type $type)
     {
-        //
+        $page_title = 'Edit Type';
+        return view('admin.types.edit', compact('type', 'page_title'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Type $type)
+    public function update(UpdateTypeRequest $request, Type $type)
     {
-        //
+        $valData = $request->validated();
+        $valData['slug'] = $type->generateSlug($request->name);
+        $type->update($valData);
+        return to_route('admin.types.index')->with('status', 'Well Done, Element Edited Succeffully');
     }
 
     /**
@@ -67,6 +83,7 @@ class TypeController extends Controller
      */
     public function destroy(Type $type)
     {
-        //
+        $type->delete();
+        return to_route('admin.types.index')->with('status', 'Well Done, Element deleted Succeffully'); 
     }
 }

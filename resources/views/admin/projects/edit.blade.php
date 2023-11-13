@@ -38,7 +38,7 @@
 
                         <label for="description" class="form-label"><strong>Description</strong></label>
 
-                        <textarea class="form-control" name="description" id="description" aria-describedby="helpTitle" cols="30"
+                        <textarea class="form-control" name="description" id="description" aria-describedby="helpDescription" cols="30"
                             rows="5">{{ old('description') ? old('description') : $project->description }}</textarea>
 
                         {{-- OLD FORM --}}
@@ -76,7 +76,7 @@
                         <label for="tech" class="form-label"><strong>Technologies Used</strong></label>
 
                         <input type="text" class="form-control" name="tech" id="tech"
-                            aria-describedby="helpTitle" value="{{ old('tech') ? old('tech') : $project->tech }}">
+                            aria-describedby="helpTech" value="{{ old('tech') ? old('tech') : $project->tech }}">
 
                         @error('tech')
                             <div class="text-danger">{{ $message }}</div>
@@ -89,7 +89,7 @@
                         <label for="github" class="form-label"><strong>GitHub Link</strong></label>
 
                         <input type="text" class="form-control" name="github" id="github"
-                            aria-describedby="helpTitle" value="{{ old('github') ? old('github') : $project->github }}">
+                            aria-describedby="helpGithub" value="{{ old('github') ? old('github') : $project->github }}">
 
                         @error('github')
                             <div class="text-danger">{{ $message }}</div>
@@ -102,7 +102,7 @@
                         <label for="link" class="form-label"><strong>Project Link</strong></label>
 
                         <input type="text" class="form-control" name="link" id="link"
-                            aria-describedby="helpTitle" value="{{ old('link') ? old('link') : $project->link }}">
+                            aria-describedby="helpLink" value="{{ old('link') ? old('link') : $project->link }}">
 
                         @error('link')
                             <div class="text-danger">{{ $message }}</div>
