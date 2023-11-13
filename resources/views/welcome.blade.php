@@ -3,7 +3,7 @@
     <div class="jumbotron p-5 mb-4 bg-dark rounded-3">
         <div class="container py-5">
             <h1 class="display-5 fw-bold text-light">
-                Welcome to the Portfolio with authentication test page!
+                Welcome to the Portfolio with authentication test page! Now With Table Relationships!
             </h1>
         </div>
     </div>
