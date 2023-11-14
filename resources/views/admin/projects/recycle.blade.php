@@ -31,9 +31,11 @@
                             @if (str_contains($project->thumb, 'http'))
                                 <td class="text-center align-middle"><img class="img-fluid img-fluid object-fit-cover"
                                         style="height: 100px" src="{{ $project->thumb }}" alt="{{ $project->title }}"></td>
-                            @else
+                            @elseif ($project->thumb)
                                 <td class="text-center align-middle"><img class="img-fluid img-fluid object-fit-cover"
                                         style="height: 100px" src="{{ asset('storage/' . $project->thumb) }}"></td>
+                            @else
+                                <td class="text-center align-middle">N/A</td>
                             @endif
 
 

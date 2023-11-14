@@ -56,7 +56,7 @@
                         <label for="type_id" class="form-label">Type</label>
                         <select class="form-select form-select @error('type_id') is-invalid @enderror" name="type_id"
                             id="type_id">
-                            <option selected>Select a Type</option>
+                            <option selected disabled>Select a Type</option>
                             <option value="">Uncategorized</option>
                             @foreach ($types as $type)
                                 <option value="{{ $type->id }}" {{-- SE VI E' UN ERRORE E LA PAGINA VIENE RICARICATA IL CAMPO PRECEDENTEMENTE SELEZIONATO RESTA selected --}}
