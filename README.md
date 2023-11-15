@@ -295,7 +295,7 @@ TypeController ***destroy()*** METHOD
 ```php
 public function destroy(Type $type)
     {
-        $projects = Project::has('type')->get(); // RECUPERIAMO I PROGETTI CHE HANNO UN TYPE
+        $projects = Project::withTrashed()->has('type')->get(); // RECUPERIAMO I PROGETTI CHE HANNO UN TYPE
 
         // CICLIAMO I PROGETTI
         foreach ($projects as $project) {
