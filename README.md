@@ -287,6 +287,32 @@ OPPURE:
 <p><strong>Type: </strong>{{$project->type->name ? $project->type->name : 'Uncategorized'}}</p>
 ```
 
+ELIMINARE I TYPES.
+PER ELIMINARE L'ISTANZA DI UNA CLASSE CHE BelongsTo UN'ALTRA CLASSE BISOGNA PRIMA DISSOCIARLA
+https://laravel.com/docs/10.x/eloquent-relationships#updating-belongs-to-relationships
+
+TypeController ***destroy()*** METHOD
+```php
+public function destroy(Type $type)
+    {
+        $projects = Project::has('type')->get(); // RECUPERIAMO I PROGETTI CHE HANNO UN TYPE
+
+        // CICLIAMO I PROGETTI
+        foreach ($projects as $project) {
+            // QUANDO TROVIAMO UN PROGETTO IL CUI TYPE HA UN ID UGUALE A QUELLO DEL TYPE CHESTIAMO ELIMINANDO
+            if ($project->type->id == $type->id) {
+                // DISSOCIAMO IL TYPE
+                $project->type()->dissociate();
+                // NON DIMENTICHIAMO DI SALVARE
+                $project->save();
+            }
+        }
+
+        $type->delete();
+        return to_route('admin.types.index')->with('status', 'Well Done, Element deleted Succeffully'); 
+    }
+```
+
 # EXTRA
 ## ASSOCIARE POST A USER
 User -> Many Projects

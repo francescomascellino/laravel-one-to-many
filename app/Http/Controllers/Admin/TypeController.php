@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTypeRequest;
 use App\Http\Requests\UpdateTypeRequest;
+use App\Models\Project;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -83,7 +84,20 @@ class TypeController extends Controller
      */
     public function destroy(Type $type)
     {
+        // RECUPERIAMO I PROGETTI CHE HANNO UN TYPE
+        $projects = Project::has('type')->get();
+
+        foreach ($projects as $project) {
+            // QUANDO TROVIAMO UN PROGETTO IL CUI TYPE HA UN ID UGUALE A QUELLO DEL TYPE CHESTIAMO ELIMINANDO
+            if ($project->type->id == $type->id) {
+                // DISSOCIAMO IL TYPE
+                $project->type()->dissociate();
+                // NON DIMENTICHIAMO DI SALVARE
+                $project->save();
+            }
+        }
+
         $type->delete();
-        return to_route('admin.types.index')->with('status', 'Well Done, Element deleted Succeffully'); 
+        return to_route('admin.types.index')->with('status', 'Well Done, Element deleted Succeffully');
     }
 }
